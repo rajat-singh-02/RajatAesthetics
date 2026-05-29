@@ -1,0 +1,1756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rajat Aesthetics — Global Financial Tribune</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300;1,8..60,400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+:root {
+  --ink: #111111;
+  --ink-muted: #555555;
+  --ink-faint: #888888;
+  --rule: #cccccc;
+  --rule-light: #e8e8e8;
+  --paper: #faf9f6;
+  --paper-off: #f0ede6;
+  --accent: #b5271d;
+  --accent-gold: #8b6914;
+  --success: #1a6b3a;
+  --danger: #b5271d;
+  --col-gap: 24px;
+  --sidebar-w: 280px;
+  --max-w: 1280px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--paper); color: var(--ink); font-family: 'Inter', sans-serif; font-size: 15px; line-height: 1.6; }
+
+/* ── TICKER ─────────────────────────────────────────── */
+#ticker-bar {
+  background: var(--ink);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+#ticker-inner {
+  display: inline-block;
+  animation: ticker 40s linear infinite;
+}
+#ticker-inner:hover { animation-play-state: paused; }
+@keyframes ticker {
+  0% { transform: translateX(100vw); }
+  100% { transform: translateX(-100%); }
+}
+.tick-item { display: inline-block; margin: 0 24px; }
+.tick-up { color: #5de385; }
+.tick-dn { color: #ff7070; }
+
+/* ── MASTHEAD ────────────────────────────────────────── */
+#masthead {
+  border-bottom: 3px double var(--ink);
+  padding: 16px 0 12px;
+  text-align: center;
+  background: var(--paper);
+}
+#masthead-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+.masthead-meta { font-size: 11px; color: var(--ink-muted); line-height: 1.5; text-align: left; }
+.masthead-meta-r { text-align: right; }
+#site-name {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(32px, 5vw, 60px);
+  font-weight: 700;
+  letter-spacing: -1px;
+  color: var(--ink);
+  line-height: 1;
+}
+.site-tagline {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-top: 4px;
+  font-family: 'Inter', sans-serif;
+}
+#masthead-rule {
+  border: none;
+  border-top: 1px solid var(--ink);
+  max-width: var(--max-w);
+  margin: 12px auto 0;
+}
+
+/* ── NAV ─────────────────────────────────────────────── */
+#nav-bar {
+  background: var(--ink);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+#nav-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#nav-links { display: flex; gap: 0; }
+.nav-link {
+  display: block;
+  padding: 12px 16px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #ccc;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+  user-select: none;
+}
+.nav-link:hover { color: #fff; }
+.nav-link.active { color: #fff; border-bottom-color: var(--accent); }
+#cms-btn {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+#cms-btn:hover { background: #8f1e16; }
+
+/* ── LAYOUT ──────────────────────────────────────────── */
+.page-section { display: none; }
+.page-section.visible { display: block; }
+.container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+/* ── HOME GRID ───────────────────────────────────────── */
+#home-grid {
+  display: grid;
+  grid-template-columns: 1fr var(--sidebar-w);
+  gap: var(--col-gap);
+  padding: 28px 0;
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+#home-main {}
+#home-sidebar {}
+.section-rule {
+  border: none;
+  border-top: 2px solid var(--ink);
+  margin: 0 0 4px;
+}
+.section-rule-thin {
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: 16px 0;
+}
+.section-head {
+  font-family: 'Playfair Display', serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 12px;
+  padding-top: 4px;
+}
+.section-head-accent { color: var(--accent); }
+
+/* ── FEATURED STORY ──────────────────────────────────── */
+#featured-article {
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+.featured-kicker {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.featured-headline {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(24px, 3.5vw, 38px);
+  font-weight: 700;
+  line-height: 1.18;
+  color: var(--ink);
+  margin-bottom: 12px;
+  cursor: pointer;
+}
+.featured-headline:hover { color: var(--accent); }
+.featured-deck {
+  font-family: 'Source Serif 4', serif;
+  font-size: 16px;
+  color: var(--ink-muted);
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+.article-byline {
+  font-size: 12px;
+  color: var(--ink-faint);
+  letter-spacing: 0.04em;
+}
+.article-byline strong { color: var(--ink-muted); font-weight: 600; }
+
+/* ── ARTICLE GRID ────────────────────────────────────── */
+.article-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0;
+}
+.article-grid.two-col { grid-template-columns: 1fr 1fr; }
+.article-card {
+  padding: 16px;
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+.article-card:nth-child(3n) { border-right: none; }
+.article-card:nth-child(3n+2) {}
+.article-card:last-child, .article-card:nth-last-child(-n+3) { border-bottom: none; }
+.article-card .kicker {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.article-card .headline {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--ink);
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+.article-card .headline:hover { color: var(--accent); }
+.article-card .excerpt {
+  font-size: 13px;
+  color: var(--ink-muted);
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.article-card .byline {
+  font-size: 11px;
+  color: var(--ink-faint);
+  margin-top: 10px;
+}
+
+/* ── SIDEBAR ─────────────────────────────────────────── */
+.sidebar-block { margin-bottom: 24px; }
+.sidebar-rule { border: none; border-top: 2px solid var(--ink); margin-bottom: 4px; }
+.sidebar-head {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 10px;
+  padding-top: 4px;
+}
+.market-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--rule-light);
+  font-size: 13px;
+}
+.market-card:last-child { border-bottom: none; }
+.mkt-name { font-weight: 500; color: var(--ink); }
+.mkt-sub { font-size: 11px; color: var(--ink-faint); }
+.mkt-price { text-align: right; }
+.mkt-value { font-weight: 600; color: var(--ink); }
+.mkt-chg { font-size: 12px; font-weight: 500; }
+.up { color: var(--success); }
+.dn { color: var(--danger); }
+
+/* ── MARKETS SECTION ─────────────────────────────────── */
+#section-markets .container { padding-top: 28px; padding-bottom: 40px; }
+.markets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.idx-card {
+  border: 1px solid var(--rule);
+  background: #fff;
+  padding: 16px 18px;
+  border-radius: 3px;
+}
+.idx-name { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-muted); margin-bottom: 4px; }
+.idx-value { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--ink); }
+.idx-change { font-size: 13px; font-weight: 500; margin-top: 2px; }
+.idx-card.up-card { border-top: 3px solid var(--success); }
+.idx-card.dn-card { border-top: 3px solid var(--danger); }
+.chart-wrap { background: #fff; border: 1px solid var(--rule); padding: 20px; border-radius: 3px; margin-bottom: 28px; }
+.chart-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 600; margin-bottom: 16px; }
+.chart-symbol-select { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.sym-btn {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 4px 10px; border: 1px solid var(--rule); background: #fff;
+  border-radius: 2px; cursor: pointer; color: var(--ink-muted);
+}
+.sym-btn.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+.movers-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 28px; }
+.movers-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.movers-table th { text-align: left; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); border-bottom: 2px solid var(--ink); padding: 6px 8px; }
+.movers-table td { padding: 8px; border-bottom: 1px solid var(--rule-light); }
+.movers-table tr:last-child td { border-bottom: none; }
+.badge { font-size: 11px; font-weight: 600; padding: 2px 6px; border-radius: 2px; display: inline-block; }
+.badge-up { background: #d6f0e0; color: var(--success); }
+.badge-dn { background: #fde0de; color: var(--danger); }
+
+/* ── UHNI SECTION ────────────────────────────────────── */
+#section-uhni .container { padding-top: 28px; padding-bottom: 40px; }
+.uhni-hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 36px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--rule);
+}
+.uhni-stat-block { text-align: center; padding: 24px; border: 1px solid var(--rule); background: #fff; border-radius: 3px; }
+.uhni-stat-num { font-family: 'Playfair Display', serif; font-size: 42px; font-weight: 700; color: var(--ink); }
+.uhni-stat-label { font-size: 13px; color: var(--ink-muted); margin-top: 4px; }
+.uhni-stat-sub { font-size: 12px; color: var(--ink-faint); margin-top: 2px; }
+.uhni-stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 32px; }
+.case-study-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 24px;
+}
+.case-card {
+  border: 1px solid var(--rule);
+  background: #fff;
+  border-radius: 3px;
+  overflow: hidden;
+}
+.case-card-head {
+  background: var(--ink);
+  color: #fff;
+  padding: 16px 20px;
+}
+.case-name { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 600; }
+.case-title { font-size: 12px; color: #aaa; margin-top: 2px; }
+.case-body { padding: 16px 20px; }
+.case-metric { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--rule-light); font-size: 13px; }
+.case-metric:last-child { border-bottom: none; }
+.case-metric-label { color: var(--ink-muted); }
+.case-metric-value { font-weight: 600; color: var(--ink); }
+.case-insight {
+  font-family: 'Source Serif 4', serif;
+  font-size: 14px;
+  color: var(--ink-muted);
+  border-left: 3px solid var(--accent);
+  padding-left: 12px;
+  margin: 16px 0 0;
+  font-style: italic;
+  line-height: 1.5;
+}
+.allocation-bar { display: flex; height: 8px; border-radius: 4px; overflow: hidden; margin: 8px 0; }
+.alloc-seg { height: 100%; }
+.alloc-legend { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.alloc-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 4px; }
+.alloc-item { font-size: 11px; color: var(--ink-muted); display: flex; align-items: center; }
+
+/* ── PRIVATE SECTOR ──────────────────────────────────── */
+#section-private .container { padding-top: 28px; padding-bottom: 40px; }
+.ipo-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 32px; }
+.ipo-table th { text-align: left; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); border-bottom: 2px solid var(--ink); padding: 8px 10px; }
+.ipo-table td { padding: 10px; border-bottom: 1px solid var(--rule-light); }
+.ipo-table tr:hover td { background: #f7f5f0; }
+.stage-pill { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 8px; border-radius: 10px; }
+.stage-public { background: #d6f0e0; color: var(--success); }
+.stage-ipo { background: #fff3cd; color: #6b4a00; }
+.stage-pre { background: #e8e8f0; color: #4a4a6b; }
+.transition-stories { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-top: 28px; }
+
+/* ── CASE STUDIES ────────────────────────────────────── */
+#section-cases .container { padding-top: 28px; padding-bottom: 40px; }
+.case-full { border: 1px solid var(--rule); background: #fff; padding: 28px 32px; border-radius: 3px; margin-bottom: 24px; }
+.case-full-kicker { font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+.case-full-headline { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; line-height: 1.2; margin-bottom: 12px; }
+.case-full-body { font-family: 'Source Serif 4', serif; font-size: 15px; line-height: 1.75; color: var(--ink-muted); }
+.case-full-body p { margin-bottom: 14px; }
+.pull-quote {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-style: italic;
+  color: var(--ink);
+  border-top: 3px double var(--ink);
+  border-bottom: 3px double var(--ink);
+  padding: 16px 0;
+  margin: 20px 0;
+  line-height: 1.4;
+}
+
+/* ── ANALYSIS ────────────────────────────────────────── */
+#section-analysis .container { padding-top: 28px; padding-bottom: 40px; }
+.analysis-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 32px; }
+.opinion-card { border-top: 4px solid var(--accent); padding: 20px; background: #fff; border: 1px solid var(--rule); margin-bottom: 20px; border-radius: 3px; }
+.opinion-label { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+.opinion-headline { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; line-height: 1.2; margin-bottom: 10px; }
+.opinion-body { font-family: 'Source Serif 4', serif; font-size: 14px; line-height: 1.7; color: var(--ink-muted); }
+
+/* ── SOURCES ─────────────────────────────────────────── */
+#section-sources .container { padding-top: 28px; padding-bottom: 40px; }
+.source-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 20px; }
+.source-card { border: 1px solid var(--rule); background: #fff; padding: 20px; border-radius: 3px; }
+.source-name { font-weight: 600; font-size: 16px; margin-bottom: 4px; }
+.source-type { font-size: 11px; color: var(--accent); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+.source-desc { font-size: 13px; color: var(--ink-muted); line-height: 1.5; }
+.source-endpoints { margin-top: 10px; }
+.endpoint-pill { display: inline-block; font-size: 11px; background: var(--paper-off); color: var(--ink-muted); padding: 2px 8px; border-radius: 2px; margin: 2px 2px 0 0; font-family: 'Inter', monospace; }
+
+/* ── NEWS FROM API ───────────────────────────────────── */
+.news-item { padding: 10px 0; border-bottom: 1px solid var(--rule-light); }
+.news-item:last-child { border-bottom: none; }
+.news-item a { color: var(--ink); text-decoration: none; font-size: 13px; font-weight: 500; line-height: 1.4; display: block; }
+.news-item a:hover { color: var(--accent); }
+.news-meta { font-size: 11px; color: var(--ink-faint); margin-top: 3px; }
+.news-sentiment { font-size: 10px; font-weight: 600; padding: 1px 5px; border-radius: 2px; display: inline-block; margin-left: 4px; }
+.sent-bull { background: #d6f0e0; color: var(--success); }
+.sent-bear { background: #fde0de; color: var(--danger); }
+.sent-neu { background: #eeeeee; color: #555; }
+
+/* ── CMS MODAL ───────────────────────────────────────── */
+#cms-overlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(0,0,0,0.65);
+  overflow-y: auto;
+  padding: 40px 20px;
+}
+#cms-overlay.open { display: block; }
+#cms-modal {
+  background: var(--paper);
+  max-width: 780px;
+  margin: 0 auto;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid var(--rule);
+}
+#cms-modal-head {
+  background: var(--ink);
+  color: #fff;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#cms-modal-head h2 { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 600; }
+#cms-close { background: none; border: none; color: #fff; font-size: 22px; cursor: pointer; line-height: 1; }
+#cms-body { padding: 24px; }
+.cms-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--rule); margin-bottom: 20px; }
+.cms-tab { padding: 8px 18px; font-size: 13px; font-weight: 500; cursor: pointer; border-bottom: 3px solid transparent; color: var(--ink-muted); }
+.cms-tab.active { color: var(--ink); border-bottom-color: var(--accent); }
+.cms-panel { display: none; }
+.cms-panel.active { display: block; }
+.form-group { margin-bottom: 16px; }
+.form-group label { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 6px; }
+.form-group input, .form-group select, .form-group textarea {
+  width: 100%; padding: 8px 12px; font-size: 14px; font-family: 'Inter', sans-serif;
+  border: 1px solid var(--rule); border-radius: 3px; background: #fff; color: var(--ink);
+  outline: none;
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--ink); }
+.form-group textarea { resize: vertical; min-height: 120px; line-height: 1.5; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.btn-primary {
+  background: var(--ink); color: #fff; border: none; padding: 10px 24px;
+  font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+  border-radius: 3px; cursor: pointer;
+}
+.btn-primary:hover { background: #333; }
+.btn-danger { background: var(--accent); }
+.btn-danger:hover { background: #8f1e16; }
+.articles-list { max-height: 400px; overflow-y: auto; }
+.cms-article-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 0; border-bottom: 1px solid var(--rule-light); gap: 12px;
+}
+.cms-article-item:last-child { border-bottom: none; }
+.cms-art-info { flex: 1; min-width: 0; }
+.cms-art-title { font-size: 14px; font-weight: 500; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cms-art-meta { font-size: 12px; color: var(--ink-faint); margin-top: 2px; }
+.cms-art-actions { display: flex; gap: 6px; flex-shrink: 0; }
+.btn-sm { font-size: 11px; padding: 4px 10px; border-radius: 2px; cursor: pointer; border: 1px solid var(--rule); background: #fff; color: var(--ink-muted); font-weight: 500; }
+.btn-sm:hover { border-color: var(--ink); color: var(--ink); }
+.btn-sm.del { border-color: var(--accent); color: var(--accent); }
+.btn-sm.del:hover { background: var(--accent); color: #fff; }
+
+/* ── ARTICLE READER ──────────────────────────────────── */
+#article-reader {
+  display: none;
+  position: fixed; inset: 0; z-index: 200;
+  background: var(--paper);
+  overflow-y: auto;
+}
+#article-reader.open { display: block; }
+#reader-inner {
+  max-width: 760px; margin: 0 auto; padding: 48px 32px;
+}
+#reader-back {
+  font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--ink-muted); cursor: pointer; margin-bottom: 32px; display: inline-flex; align-items: center; gap: 6px;
+  background: none; border: none;
+}
+#reader-back:hover { color: var(--ink); }
+#reader-kicker { font-size: 11px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+#reader-headline { font-family: 'Playfair Display', serif; font-size: clamp(28px, 4vw, 44px); font-weight: 700; line-height: 1.15; margin-bottom: 16px; }
+#reader-deck { font-family: 'Source Serif 4', serif; font-size: 19px; color: var(--ink-muted); margin-bottom: 16px; line-height: 1.5; }
+#reader-byline { font-size: 13px; color: var(--ink-faint); border-bottom: 1px solid var(--rule); padding-bottom: 16px; margin-bottom: 24px; }
+#reader-body { font-family: 'Source Serif 4', serif; font-size: 18px; line-height: 1.8; color: var(--ink); }
+#reader-body p { margin-bottom: 20px; }
+#reader-body h3 { font-family: 'Playfair Display', serif; font-size: 22px; margin: 28px 0 12px; }
+
+/* ── FOOTER ──────────────────────────────────────────── */
+footer {
+  border-top: 3px double var(--ink);
+  background: var(--ink);
+  color: #888;
+  padding: 24px;
+  text-align: center;
+  font-size: 12px;
+  margin-top: 60px;
+}
+footer .footer-name { font-family: 'Playfair Display', serif; font-size: 20px; color: #fff; margin-bottom: 6px; }
+
+/* ── LOADING STATE ───────────────────────────────────── */
+.skeleton { background: linear-gradient(90deg, #e8e4dd 25%, #f0ede6 50%, #e8e4dd 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 3px; }
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+.loading-text { display: inline-block; min-width: 80px; height: 1em; vertical-align: middle; }
+
+/* ── RESPONSIVE ──────────────────────────────────────── */
+@media (max-width: 900px) {
+  #home-grid { grid-template-columns: 1fr; }
+  .uhni-hero, .case-study-grid, .analysis-grid, .movers-grid, .source-grid, .transition-stories { grid-template-columns: 1fr; }
+  .article-grid { grid-template-columns: 1fr 1fr; }
+  .uhni-stats-row { grid-template-columns: 1fr 1fr; }
+  .ipo-table { font-size: 12px; }
+}
+@media (max-width: 600px) {
+  .article-grid { grid-template-columns: 1fr; }
+  .markets-grid { grid-template-columns: 1fr 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+  #masthead-top { flex-direction: column; align-items: center; gap: 8px; text-align: center; }
+  .masthead-meta, .masthead-meta-r { text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- TICKER BAR -->
+<div id="ticker-bar">
+  <div id="ticker-inner" id="ticker-track">Loading market data…</div>
+</div>
+
+<!-- MASTHEAD -->
+<div id="masthead">
+  <div id="masthead-top">
+    <div class="masthead-meta">
+      <div id="edition-date">Loading…</div>
+      <div>Global Financial Tribune</div>
+    </div>
+    <div>
+      <div id="site-name">Rajat Aesthetics</div>
+      <div class="site-tagline">Markets · Wealth · Intelligence · Analysis</div>
+    </div>
+    <div class="masthead-meta masthead-meta-r">
+      <div>Est. 2024</div>
+      <div id="market-status-badge">Market Status Loading…</div>
+    </div>
+  </div>
+  <hr id="masthead-rule">
+</div>
+
+<!-- NAVIGATION -->
+<nav id="nav-bar">
+  <div id="nav-inner">
+    <div id="nav-links">
+      <span class="nav-link active" data-section="home">Home</span>
+      <span class="nav-link" data-section="markets">Markets</span>
+      <span class="nav-link" data-section="uhni">UHNI Watch</span>
+      <span class="nav-link" data-section="private">Private Sector</span>
+      <span class="nav-link" data-section="cases">Case Studies</span>
+      <span class="nav-link" data-section="analysis">Analysis</span>
+      <span class="nav-link" data-section="sources">Sources</span>
+    </div>
+    <button id="cms-btn" onclick="openCMS()">+ Publish</button>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- HOME SECTION                                         -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section id="section-home" class="page-section visible">
+  <div id="home-grid">
+    <!-- MAIN COLUMN -->
+    <div id="home-main">
+      <hr class="section-rule">
+      <div id="featured-article">
+        <div class="featured-kicker" id="feat-kicker">UHNI Watch</div>
+        <h1 class="featured-headline" id="feat-headline" onclick="openArticle('featured')">
+          Global UHNI Wealth Crosses $13.6 Trillion: How the Ultra-Rich Are Reshaping Large-Cap Markets
+        </h1>
+        <p class="featured-deck" id="feat-deck">
+          A comprehensive look at how ultra-high-net-worth individuals are accelerating the private-to-public capital transition, driving institutional-grade demand into large-cap equities and fundamentally altering market structure.
+        </p>
+        <div class="article-byline">By <strong>Rajat Singh</strong> · <span id="feat-date"></span> · 8 min read</div>
+      </div>
+
+      <hr class="section-rule">
+      <div class="section-head">Latest Stories</div>
+      <div class="article-grid" id="home-article-grid">
+        <!-- populated by JS -->
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div id="home-sidebar">
+      <div class="sidebar-block">
+        <hr class="sidebar-rule">
+        <div class="sidebar-head">Global Indices</div>
+        <div id="sidebar-markets">
+          <div class="market-card"><div><div class="mkt-name">Loading…</div></div></div>
+        </div>
+      </div>
+
+      <div class="sidebar-block">
+        <hr class="sidebar-rule">
+        <div class="sidebar-head">Market Pulse</div>
+        <div id="sidebar-news">
+          <div class="news-item"><a href="#">Loading market intelligence…</a></div>
+        </div>
+      </div>
+
+      <div class="sidebar-block">
+        <hr class="sidebar-rule">
+        <div class="sidebar-head">UHNI Signal</div>
+        <div style="background:#fff;border:1px solid var(--rule);padding:14px;border-radius:3px;">
+          <div style="font-size:11px;color:var(--ink-faint);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.1em;font-weight:600;">Net Allocation Shift (30d)</div>
+          <canvas id="uhni-donut" width="200" height="160"></canvas>
+          <div class="alloc-legend" id="donut-legend" style="justify-content:center;margin-top:10px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- MARKETS SECTION                                      -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section id="section-markets" class="page-section">
+  <div class="container">
+    <hr class="section-rule">
+    <div class="section-head section-head-accent">Global Markets</div>
+    <div class="markets-grid" id="markets-index-grid">
+      <!-- index cards populated by JS -->
+    </div>
+
+    <div class="chart-wrap">
+      <div class="chart-title">Price Performance — 30 Day</div>
+      <div class="chart-symbol-select" id="chart-symbols">
+        <button class="sym-btn active" data-sym="SPY" onclick="loadChart('SPY',this)">S&amp;P 500</button>
+        <button class="sym-btn" data-sym="QQQ" onclick="loadChart('QQQ',this)">Nasdaq</button>
+        <button class="sym-btn" data-sym="DIA" onclick="loadChart('DIA',this)">Dow Jones</button>
+        <button class="sym-btn" data-sym="AAPL" onclick="loadChart('AAPL',this)">Apple</button>
+        <button class="sym-btn" data-sym="MSFT" onclick="loadChart('MSFT',this)">Microsoft</button>
+        <button class="sym-btn" data-sym="BRK-B" onclick="loadChart('BRK-B',this)">Berkshire</button>
+      </div>
+      <div style="position:relative;height:300px;">
+        <canvas id="price-chart"></canvas>
+      </div>
+    </div>
+
+    <div class="movers-grid">
+      <div>
+        <hr class="section-rule">
+        <div class="section-head" style="color:var(--success);">Top Gainers</div>
+        <table class="movers-table" id="gainers-table">
+          <thead><tr><th>Symbol</th><th>Price</th><th>Change</th></tr></thead>
+          <tbody><tr><td colspan="3" style="color:var(--ink-faint);font-size:13px;padding:12px 8px;">Fetching data…</td></tr></tbody>
+        </table>
+      </div>
+      <div>
+        <hr class="section-rule">
+        <div class="section-head" style="color:var(--danger);">Top Decliners</div>
+        <table class="movers-table" id="losers-table">
+          <thead><tr><th>Symbol</th><th>Price</th><th>Change</th></tr></thead>
+          <tbody><tr><td colspan="3" style="color:var(--ink-faint);font-size:13px;padding:12px 8px;">Fetching data…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- UHNI WATCH SECTION                                   -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section id="section-uhni" class="page-section">
+  <div class="container">
+    <hr class="section-rule">
+    <div class="section-head section-head-accent">UHNI Watch — Ultra High Net Worth Intelligence</div>
+
+    <div class="uhni-stats-row">
+      <div class="uhni-stat-block">
+        <div class="uhni-stat-num">$13.6T</div>
+        <div class="uhni-stat-label">Global UHNI Wealth</div>
+        <div class="uhni-stat-sub">+8.2% YoY · 2024 estimate</div>
+      </div>
+      <div class="uhni-stat-block">
+        <div class="uhni-stat-num">226,450</div>
+        <div class="uhni-stat-label">Global UHNIs (≥$30M)</div>
+        <div class="uhni-stat-sub">+6,100 new entrants in 2024</div>
+      </div>
+      <div class="uhni-stat-block">
+        <div class="uhni-stat-num">42%</div>
+        <div class="uhni-stat-label">Allocated to Equities</div>
+        <div class="uhni-stat-sub">Large-cap bias dominant</div>
+      </div>
+      <div class="uhni-stat-block">
+        <div class="uhni-stat-num">$2.1T</div>
+        <div class="uhni-stat-label">New Capital in Large-Caps</div>
+        <div class="uhni-stat-sub">Past 24 months, global</div>
+      </div>
+    </div>
+
+    <hr class="section-rule-thin">
+    <div class="section-head">Allocation Deep Dive — UHNI Portfolios</div>
+    <div class="uhni-hero">
+      <div>
+        <p style="font-family:'Source Serif 4',serif;font-size:15px;line-height:1.7;color:var(--ink-muted);margin-bottom:16px;">
+          Ultra high net worth individuals — those with investable assets exceeding $30 million — have dramatically increased their large-cap equity exposure since 2021. Historically anchored in private equity, real estate, and alternative assets, the UHNI cohort is now one of the most significant structural buyers in public markets.
+        </p>
+        <p style="font-family:'Source Serif 4',serif;font-size:15px;line-height:1.7;color:var(--ink-muted);margin-bottom:16px;">
+          The driver: liquidity preference, inflation-hedging through quality compounders, and a generational shift toward tech-heavy portfolios. Family offices managing UHNI wealth report their largest single allocation shift in a decade — away from illiquid alternatives and into listed large-caps.
+        </p>
+        <div style="background:#fff;border:1px solid var(--rule);padding:16px;border-radius:3px;">
+          <div style="font-size:12px;font-weight:600;color:var(--ink-muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.08em;">Average UHNI Asset Allocation 2024</div>
+          <div class="allocation-bar" id="uhni-alloc-bar"></div>
+          <div class="alloc-legend" id="uhni-alloc-legend"></div>
+        </div>
+      </div>
+      <div>
+        <div style="background:#fff;border:1px solid var(--rule);padding:16px;border-radius:3px;height:100%;display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-size:12px;font-weight:600;color:var(--ink-muted);margin-bottom:14px;text-transform:uppercase;letter-spacing:0.08em;">Capital Flow by Asset Class (2024)</div>
+          <canvas id="uhni-bar-chart" height="220"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-head">Iconic UHNI Case Studies</div>
+    <div class="case-study-grid" id="uhni-case-studies">
+      <!-- populated by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- PRIVATE SECTOR SECTION                               -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section id="section-private" class="page-section">
+  <div class="container">
+    <hr class="section-rule">
+    <div class="section-head section-head-accent">Private Sector — The Road to Large-Cap Markets</div>
+
+    <p style="font-family:'Source Serif 4',serif;font-size:16px;line-height:1.7;color:var(--ink-muted);max-width:860px;margin-bottom:28px;">
+      The boundary between private and public capital is dissolving. Unicorns are graduating to large-cap status faster than at any point in history, while institutional private equity is increasingly positioned as a feeder mechanism for public markets. This section tracks the transition.
+    </p>
+
+    <hr class="section-rule-thin">
+    <div class="section-head">IPO Pipeline & Transition Tracker</div>
+    <table class="ipo-table">
+      <thead>
+        <tr>
+          <th>Company</th>
+          <th>Sector</th>
+          <th>Last Valuation</th>
+          <th>Stage</th>
+          <th>Key Backers</th>
+          <th>Signal</th>
+        </tr>
+      </thead>
+      <tbody id="ipo-table-body">
+        <!-- populated by JS -->
+      </tbody>
+    </table>
+
+    <hr class="section-rule-thin">
+    <div class="section-head">How Private Equity is Upskilling for Large-Cap Markets</div>
+    <div class="transition-stories" id="transition-stories-grid">
+      <!-- populated by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- CASE STUDIES SECTION                                 -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section id="section-cases" class="page-section">
+  <div class="container">
+    <hr class="section-rule">
+    <div class="section-head section-head-accent">In-Depth Case Studies</div>
+    <div id="case-studies-container">
+      <!-- populated by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- ANALYSIS SECTION                                     -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section id="section-analysis" class="page-section">
+  <div class="container">
+    <hr class="section-rule">
+    <div class="section-head section-head-accent">Analysis & Editorial</div>
+    <div class="analysis-grid">
+      <div id="analysis-main">
+        <!-- populated by JS -->
+      </div>
+      <div id="analysis-sidebar">
+        <hr class="sidebar-rule">
+        <div class="sidebar-head">Live Market Intelligence</div>
+        <div id="analysis-news-feed">Loading…</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SOURCES SECTION                                      -->
+<!-- ═══════════════════════════════════════════════════ -->
+<section id="section-sources" class="page-section">
+  <div class="container">
+    <hr class="section-rule">
+    <div class="section-head section-head-accent">Data Sources & Methodology</div>
+    <p style="font-family:'Source Serif 4',serif;font-size:16px;line-height:1.7;color:var(--ink-muted);max-width:760px;margin-bottom:28px;">
+      Rajat Aesthetics is committed to full source transparency. All market data, financial figures, and analytical outputs are sourced from the following providers. Where original analysis is published, methodology is disclosed within the piece.
+    </p>
+    <div class="source-grid">
+      <div class="source-card">
+        <div class="source-type">Live Market Data</div>
+        <div class="source-name">Alpha Vantage</div>
+        <div class="source-desc">Real-time and historical equity prices, fundamentals, earnings, technical indicators, and news sentiment across global markets.</div>
+        <div class="source-endpoints">
+          <span class="endpoint-pill">GLOBAL_QUOTE</span>
+          <span class="endpoint-pill">TIME_SERIES_DAILY</span>
+          <span class="endpoint-pill">NEWS_SENTIMENT</span>
+          <span class="endpoint-pill">OVERVIEW</span>
+        </div>
+      </div>
+      <div class="source-card">
+        <div class="source-type">News & Filings</div>
+        <div class="source-name">Yahoo Finance</div>
+        <div class="source-desc">Market news aggregation, earnings calendar, analyst ratings, SEC filings, and global equity research coverage.</div>
+        <div class="source-endpoints">
+          <span class="endpoint-pill">Market News</span>
+          <span class="endpoint-pill">Analyst Ratings</span>
+          <span class="endpoint-pill">Earnings Data</span>
+        </div>
+      </div>
+      <div class="source-card">
+        <div class="source-type">Wealth Intelligence</div>
+        <div class="source-name">Knight Frank / Capgemini</div>
+        <div class="source-desc">UHNI population data, wealth distribution reports, luxury asset allocation studies, and the World Wealth Report.</div>
+        <div class="source-endpoints">
+          <span class="endpoint-pill">Wealth Report</span>
+          <span class="endpoint-pill">UHNI Data</span>
+        </div>
+      </div>
+      <div class="source-card">
+        <div class="source-type">Market Structure</div>
+        <div class="source-name">NSE / BSE India</div>
+        <div class="source-desc">Indian equity market data, sectoral indices, derivative data, and institutional flow disclosures for emerging market analysis.</div>
+        <div class="source-endpoints">
+          <span class="endpoint-pill">Nifty 50</span>
+          <span class="endpoint-pill">Sensex</span>
+          <span class="endpoint-pill">F&amp;O Data</span>
+        </div>
+      </div>
+      <div class="source-card">
+        <div class="source-type">Macro & Policy</div>
+        <div class="source-name">Federal Reserve / BIS</div>
+        <div class="source-desc">Monetary policy statements, interest rate decisions, global financial stability reports, and cross-border capital flow data.</div>
+        <div class="source-endpoints">
+          <span class="endpoint-pill">FRED API</span>
+          <span class="endpoint-pill">BIS Statistics</span>
+        </div>
+      </div>
+      <div class="source-card">
+        <div class="source-type">Private Markets</div>
+        <div class="source-name">PitchBook / Crunchbase</div>
+        <div class="source-desc">Venture capital deal data, unicorn valuations, PE buyout activity, and private company financials for IPO pipeline tracking.</div>
+        <div class="source-endpoints">
+          <span class="endpoint-pill">Deal Flow</span>
+          <span class="endpoint-pill">Valuations</span>
+          <span class="endpoint-pill">IPO Tracker</span>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:32px;padding:20px;border:1px solid var(--rule);background:#fff;border-radius:3px;max-width:600px;">
+      <div style="font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:8px;">API Status</div>
+      <div id="api-status">Checking connectivity…</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- ARTICLE READER OVERLAY                               -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div id="article-reader">
+  <div id="reader-inner">
+    <button id="reader-back" onclick="closeReader()">← Back</button>
+    <div id="reader-kicker"></div>
+    <h1 id="reader-headline"></h1>
+    <p id="reader-deck"></p>
+    <div id="reader-byline"></div>
+    <div id="reader-body"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- CMS MODAL                                            -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div id="cms-overlay">
+  <div id="cms-modal">
+    <div id="cms-modal-head">
+      <h2>Rajat Aesthetics — CMS</h2>
+      <button id="cms-close" onclick="closeCMS()">×</button>
+    </div>
+    <div id="cms-body">
+      <div class="cms-tabs">
+        <div class="cms-tab active" onclick="switchCMSTab('write',this)">Write Article</div>
+        <div class="cms-tab" onclick="switchCMSTab('manage',this)">Manage Articles</div>
+        <div class="cms-tab" onclick="switchCMSTab('featured',this)">Set Featured</div>
+      </div>
+
+      <!-- WRITE TAB -->
+      <div class="cms-panel active" id="cms-panel-write">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Section</label>
+            <select id="art-section">
+              <option value="home">Home / General</option>
+              <option value="uhni">UHNI Watch</option>
+              <option value="private">Private Sector</option>
+              <option value="cases">Case Studies</option>
+              <option value="analysis">Analysis</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Category Tag</label>
+            <input type="text" id="art-kicker" placeholder="e.g. UHNI Watch, IPO Tracker, Markets">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Headline</label>
+          <input type="text" id="art-headline" placeholder="Enter article headline…">
+        </div>
+        <div class="form-group">
+          <label>Deck / Standfirst</label>
+          <input type="text" id="art-deck" placeholder="Brief summary that appears under the headline…">
+        </div>
+        <div class="form-group">
+          <label>Body Content</label>
+          <textarea id="art-body" placeholder="Write your article here. Use double newlines for paragraphs. Start a line with ### for a subheading."></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Author</label>
+            <input type="text" id="art-author" value="Rajat Singh" placeholder="Author name">
+          </div>
+          <div class="form-group">
+            <label>Read Time</label>
+            <input type="text" id="art-readtime" placeholder="e.g. 5 min read">
+          </div>
+        </div>
+        <button class="btn-primary" onclick="saveArticle()">Publish Article</button>
+        <input type="hidden" id="art-edit-id">
+      </div>
+
+      <!-- MANAGE TAB -->
+      <div class="cms-panel" id="cms-panel-manage">
+        <div class="articles-list" id="cms-articles-list">
+          <!-- populated by JS -->
+        </div>
+      </div>
+
+      <!-- FEATURED TAB -->
+      <div class="cms-panel" id="cms-panel-featured">
+        <p style="font-size:13px;color:var(--ink-muted);margin-bottom:16px;">Select which article appears as the main featured story on the homepage.</p>
+        <div id="featured-picker"><!-- populated by JS --></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-name">Rajat Aesthetics</div>
+  <div>Global Financial Tribune · Markets · Wealth · Intelligence</div>
+  <div style="margin-top:6px;">Data sourced from Alpha Vantage, Yahoo Finance, and public market disclosures. Not financial advice.</div>
+</footer>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- JAVASCRIPT                                           -->
+<!-- ═══════════════════════════════════════════════════ -->
+<script>
+const AV_KEY = 'Y2WV71F0AOB498M6';
+const AV_BASE = 'https://www.alphavantage.co/query';
+
+// ── STATE ──────────────────────────────────────────────
+let articles = JSON.parse(localStorage.getItem('ra_articles') || '[]');
+let featuredId = localStorage.getItem('ra_featured') || null;
+let priceChart = null;
+let donutChart = null;
+let barChart = null;
+let marketData = {};
+
+// ── SEED ARTICLES ──────────────────────────────────────
+const seedArticles = [
+  {
+    id: 'seed1',
+    section: 'uhni',
+    kicker: 'UHNI Watch',
+    headline: 'Why Family Offices Are Pivoting From Private Equity to Public Large-Caps',
+    deck: 'The liquidity premium has reversed. As PE returns compress, sophisticated family office capital is rotating into S&P 500 and FTSE 100 large-caps at an unprecedented pace.',
+    body: `### The Great Rotation\n\nFor decades, the conventional wisdom among ultra-high-net-worth families was clear: private equity outperforms. The illiquidity premium — the extra return extracted for locking up capital — justified allocating 30-40% of portfolios to PE funds. That calculus is changing.\n\n### Compressed Returns, Rising Costs\n\nPost-2021, average PE returns have compressed toward 12-14% net IRR, down from 20%+ in the 2010s. Meanwhile, quality large-cap compounders — Microsoft, Alphabet, LVMH, Berkshire Hathaway — have delivered comparable or superior risk-adjusted returns with daily liquidity.\n\n### The New UHNI Playbook\n\nLeading family offices managing $500M+ portfolios are now running 45-55% equity allocations, heavily weighted toward mega-cap tech, healthcare, and consumer staples. The shift reflects both a performance argument and a structural preference: as geopolitical uncertainty rises, liquidity is increasingly valued.\n\n### What This Means for Markets\n\nThe systematic rotation of UHNI capital into large-caps creates a structural bid. Passive and active large-cap strategies benefit from this stable, long-horizon buying. Volatility in large-caps is increasingly cushioned by family office rebalancing flows — a dynamic that fundamentally alters the risk profile of the largest companies in the world.`,
+    author: 'Rajat Singh',
+    readtime: '6 min read',
+    date: new Date(Date.now() - 86400000).toISOString()
+  },
+  {
+    id: 'seed2',
+    section: 'private',
+    kicker: 'Private Sector',
+    headline: 'The Unicorn-to-Large-Cap Pipeline: How PE Firms Are Training for Public Markets',
+    deck: 'Private equity firms are no longer satisfied with quiet exits. The next generation of PE-backed companies is being purpose-built for large-cap status — and the playbook is dramatically different.',
+    body: `### From Exit to Empire\n\nThe traditional PE model — buy, restructure, sell — is being supplemented by a new ambition: creating enduring large-cap public companies. Firms like KKR, Blackstone, and Apollo are holding portfolio companies longer, investing in governance, ESG reporting, and institutional-grade IR functions before IPO.\n\n### The Upskilling Imperative\n\nCFOs at PE-backed companies report that preparation for public markets now begins 3-5 years before the planned IPO date. This includes quarterly earnings discipline, analyst relations capacity, Reg FD compliance training, and the adoption of large-cap-standard reporting cadences.\n\n### Capital Efficiency at Scale\n\nPrivate companies transitioning to large-cap status face a fundamental challenge: capital efficiency metrics that satisfy PE sponsors are not the same as those prized by public market investors. Revenue growth, gross margin expansion, and free cash flow conversion replace EBITDA multiples as the primary valuation drivers.\n\n### The Indian Context\n\nIn India, the trend is particularly pronounced. HDFC Bank, Bajaj Finance, and Infosys all represent the successful institutionalization of originally private or family-controlled businesses into globally competitive large-caps. The current generation of Indian unicorns — Zepto, PhysicsWallah, Meesho — is watching and learning.`,
+    author: 'Rajat Singh',
+    readtime: '7 min read',
+    date: new Date(Date.now() - 172800000).toISOString()
+  },
+  {
+    id: 'seed3',
+    section: 'analysis',
+    kicker: 'Analysis',
+    headline: 'The Structural Case for Large-Cap Dominance in a Fragmenting World',
+    deck: 'As deglobalization accelerates and interest rates normalize at higher levels, the case for large-cap quality compounders has never been stronger. Here is why the next decade belongs to mega-caps.',
+    body: `### Quality as Defense\n\nIn a world where supply chains are reshoring, labor costs are rising, and interest rates have structurally shifted higher, the winners are companies with pricing power, balance sheet strength, and global brand equity. These are not characteristics of small-caps or emerging market challengers — they are the defining features of established large-cap leaders.\n\n### The Rate Environment\n\nHigher-for-longer interest rates disproportionately benefit large-caps. Why? Their cost of capital is lower (investment-grade credit), their cash generation is stronger (covering capex from operations), and their competitive moats prevent revenue compression. Small and mid-cap companies face a structurally higher hurdle rate — a reversal from the zero-rate era.\n\n### UHNI Flows as Confirmation\n\nThe allocation decisions of the world's most sophisticated investors — UHNIs and their family offices — serve as a leading indicator. When these investors systematically increase large-cap exposure, as they have since 2022, it reflects not just return-chasing but a fundamental view about where durable value creation is occurring.\n\n### The Upskilling Opportunity\n\nFor retail and institutional investors who have historically underweighted large-caps in favor of alpha-seeking strategies, the data now supports a core large-cap overweight. The tools to execute this have democratized: low-cost ETFs, direct indexing, and factor-based large-cap strategies give every investor access to the same structural tailwinds once reserved for institutional buyers.`,
+    author: 'Rajat Singh',
+    readtime: '8 min read',
+    date: new Date(Date.now() - 259200000).toISOString()
+  }
+];
+
+function initSeedArticles() {
+  const existing = articles.map(a => a.id);
+  seedArticles.forEach(sa => {
+    if (!existing.includes(sa.id)) articles.push(sa);
+  });
+  saveArticles();
+}
+
+// ── STORAGE ────────────────────────────────────────────
+function saveArticles() {
+  localStorage.setItem('ra_articles', JSON.stringify(articles));
+}
+
+// ── NAV ────────────────────────────────────────────────
+document.querySelectorAll('.nav-link').forEach(link => {
+  link.addEventListener('click', () => {
+    const sec = link.dataset.section;
+    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+    link.classList.add('active');
+    document.querySelectorAll('.page-section').forEach(s => s.classList.remove('visible'));
+    document.getElementById('section-' + sec).classList.add('visible');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (sec === 'markets') initMarketsSection();
+    if (sec === 'analysis') initAnalysisSection();
+    if (sec === 'sources') checkAPIStatus();
+  });
+});
+
+// ── DATE ───────────────────────────────────────────────
+function formatDate(d) {
+  return new Date(d).toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+}
+function formatShort(d) {
+  return new Date(d).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+}
+document.getElementById('edition-date').textContent = formatDate(new Date());
+document.getElementById('feat-date').textContent = formatShort(new Date());
+
+// ── MARKET STATUS ──────────────────────────────────────
+function setMarketStatus() {
+  const now = new Date();
+  const h = now.getUTCHours();
+  const m = now.getUTCMinutes();
+  const mins = h * 60 + m;
+  const nyOpen = 13 * 60 + 30;
+  const nyClose = 20 * 60;
+  const badge = document.getElementById('market-status-badge');
+  const isWeekend = now.getUTCDay() === 0 || now.getUTCDay() === 6;
+  if (!isWeekend && mins >= nyOpen && mins < nyClose) {
+    badge.innerHTML = '<span style="color:#1a6b3a;font-weight:600;">● NYSE Open</span>';
+  } else {
+    badge.innerHTML = '<span style="color:#888;">● NYSE Closed</span>';
+  }
+}
+setMarketStatus();
+
+// ── ALPHA VANTAGE FETCH ────────────────────────────────
+const avCache = {};
+async function avFetch(params) {
+  const key = JSON.stringify(params);
+  if (avCache[key]) return avCache[key];
+  const url = AV_BASE + '?' + new URLSearchParams({ ...params, apikey: AV_KEY }).toString();
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+    avCache[key] = data;
+    return data;
+  } catch(e) {
+    return null;
+  }
+}
+
+// ── TICKER ─────────────────────────────────────────────
+const TICKER_SYMBOLS = ['SPY','QQQ','AAPL','MSFT','GOOGL','AMZN','BRK-B','NVDA','META','TSLA'];
+async function loadTicker() {
+  const results = [];
+  for (let sym of TICKER_SYMBOLS.slice(0, 5)) {
+    const data = await avFetch({ function: 'GLOBAL_QUOTE', symbol: sym });
+    if (data && data['Global Quote'] && data['Global Quote']['05. price']) {
+      const q = data['Global Quote'];
+      const price = parseFloat(q['05. price']).toFixed(2);
+      const chg = parseFloat(q['09. change']).toFixed(2);
+      const chgPct = parseFloat(q['10. change percent']).toFixed(2);
+      const cls = chg >= 0 ? 'tick-up' : 'tick-dn';
+      const sign = chg >= 0 ? '+' : '';
+      results.push(`<span class="tick-item">${sym} <strong>$${price}</strong> <span class="${cls}">${sign}${chg} (${sign}${chgPct}%)</span></span>`);
+      marketData[sym] = { price, chg, chgPct };
+    }
+  }
+  if (results.length > 0) {
+    const track = document.getElementById('ticker-inner');
+    track.innerHTML = results.join('') + results.join('') + results.join('');
+  }
+  populateSidebarMarkets();
+  populateMarketsIndexGrid();
+}
+
+// ── SIDEBAR MARKETS ────────────────────────────────────
+const INDEX_MAP = [
+  { sym: 'SPY', name: 'S&P 500', sub: 'SPDR ETF' },
+  { sym: 'QQQ', name: 'Nasdaq 100', sub: 'Invesco ETF' },
+  { sym: 'DIA', name: 'Dow Jones', sub: 'SPDR ETF' },
+  { sym: 'AAPL', name: 'Apple', sub: 'NASDAQ: AAPL' },
+  { sym: 'MSFT', name: 'Microsoft', sub: 'NASDAQ: MSFT' },
+];
+async function populateSidebarMarkets() {
+  const container = document.getElementById('sidebar-markets');
+  let html = '';
+  for (let idx of INDEX_MAP) {
+    let d = marketData[idx.sym];
+    if (!d) {
+      const raw = await avFetch({ function: 'GLOBAL_QUOTE', symbol: idx.sym });
+      if (raw && raw['Global Quote'] && raw['Global Quote']['05. price']) {
+        const q = raw['Global Quote'];
+        d = {
+          price: parseFloat(q['05. price']).toFixed(2),
+          chg: parseFloat(q['09. change']).toFixed(2),
+          chgPct: parseFloat(q['10. change percent']).toFixed(2)
+        };
+        marketData[idx.sym] = d;
+      }
+    }
+    if (d) {
+      const cls = parseFloat(d.chg) >= 0 ? 'up' : 'dn';
+      const sign = parseFloat(d.chg) >= 0 ? '+' : '';
+      html += `<div class="market-card">
+        <div><div class="mkt-name">${idx.name}</div><div class="mkt-sub">${idx.sub}</div></div>
+        <div class="mkt-price"><div class="mkt-value">$${d.price}</div><div class="mkt-chg ${cls}">${sign}${d.chgPct}%</div></div>
+      </div>`;
+    }
+  }
+  if (html) container.innerHTML = html;
+}
+
+// ── MARKETS INDEX GRID ─────────────────────────────────
+async function populateMarketsIndexGrid() {
+  const grid = document.getElementById('markets-index-grid');
+  if (!grid) return;
+  let html = '';
+  for (let idx of INDEX_MAP) {
+    let d = marketData[idx.sym];
+    if (!d) continue;
+    const isUp = parseFloat(d.chg) >= 0;
+    const cls = isUp ? 'up-card' : 'dn-card';
+    const chgCls = isUp ? 'up' : 'dn';
+    const sign = isUp ? '+' : '';
+    html += `<div class="idx-card ${cls}">
+      <div class="idx-name">${idx.name}</div>
+      <div class="idx-value">$${d.price}</div>
+      <div class="idx-change ${chgCls}">${sign}${d.chg} (${sign}${d.chgPct}%)</div>
+    </div>`;
+  }
+  if (html) grid.innerHTML = html;
+}
+
+// ── PRICE CHART ────────────────────────────────────────
+async function loadChart(sym, btn) {
+  document.querySelectorAll('.sym-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  const data = await avFetch({ function: 'TIME_SERIES_DAILY', symbol: sym, outputsize: 'compact' });
+  if (!data || !data['Time Series (Daily)']) return;
+  const ts = data['Time Series (Daily)'];
+  const dates = Object.keys(ts).slice(0, 30).reverse();
+  const closes = dates.map(d => parseFloat(ts[d]['4. close']));
+  const isUp = closes[closes.length - 1] >= closes[0];
+  const color = isUp ? '#1a6b3a' : '#b5271d';
+  const ctx = document.getElementById('price-chart');
+  if (priceChart) priceChart.destroy();
+  priceChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: dates.map(d => d.slice(5)),
+      datasets: [{
+        label: sym,
+        data: closes,
+        borderColor: color,
+        backgroundColor: color + '18',
+        borderWidth: 2,
+        pointRadius: 0,
+        pointHoverRadius: 4,
+        fill: true,
+        tension: 0.2
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false } },
+      scales: {
+        x: { grid: { color: '#f0ede6' }, ticks: { font: { size: 11 }, maxTicksLimit: 8 } },
+        y: { grid: { color: '#f0ede6' }, ticks: { font: { size: 11 }, callback: v => '$' + v.toFixed(0) } }
+      }
+    }
+  });
+}
+
+// ── MOVERS ─────────────────────────────────────────────
+const MOVER_SYMS = ['AAPL','MSFT','GOOGL','NVDA','META','AMZN','TSLA','BRK-B','JPM','V'];
+async function loadMovers() {
+  const results = [];
+  for (let sym of MOVER_SYMS.slice(0, 8)) {
+    let d = marketData[sym];
+    if (!d) {
+      const raw = await avFetch({ function: 'GLOBAL_QUOTE', symbol: sym });
+      if (raw && raw['Global Quote'] && raw['Global Quote']['05. price']) {
+        const q = raw['Global Quote'];
+        d = { price: parseFloat(q['05. price']).toFixed(2), chg: parseFloat(q['09. change']).toFixed(2), chgPct: parseFloat(q['10. change percent']).toFixed(2) };
+        marketData[sym] = d;
+      }
+    }
+    if (d) results.push({ sym, ...d });
+  }
+  const sorted = results.sort((a,b) => parseFloat(b.chgPct) - parseFloat(a.chgPct));
+  const gainers = sorted.filter(r => parseFloat(r.chg) >= 0).slice(0,5);
+  const losers = sorted.filter(r => parseFloat(r.chg) < 0).slice(0,5);
+  function buildRows(arr) {
+    return arr.map(r => `<tr>
+      <td><strong>${r.sym}</strong></td>
+      <td>$${r.price}</td>
+      <td><span class="badge ${parseFloat(r.chg)>=0?'badge-up':'badge-dn'}">${parseFloat(r.chg)>=0?'+':''}${r.chgPct}%</span></td>
+    </tr>`).join('');
+  }
+  const gt = document.getElementById('gainers-table');
+  const lt = document.getElementById('losers-table');
+  if (gt) gt.querySelector('tbody').innerHTML = gainers.length ? buildRows(gainers) : '<tr><td colspan="3" style="color:var(--ink-faint);font-size:13px;padding:12px 8px;">No data available</td></tr>';
+  if (lt) lt.querySelector('tbody').innerHTML = losers.length ? buildRows(losers) : '<tr><td colspan="3" style="color:var(--ink-faint);font-size:13px;padding:12px 8px;">No data available</td></tr>';
+}
+
+function initMarketsSection() {
+  populateMarketsIndexGrid();
+  loadChart('SPY', document.querySelector('.sym-btn.active'));
+  loadMovers();
+}
+
+// ── NEWS FEED ──────────────────────────────────────────
+async function loadNewsFeed(containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  const data = await avFetch({ function: 'NEWS_SENTIMENT', limit: 10, sort: 'LATEST' });
+  if (!data || !data.feed || !data.feed.length) {
+    container.innerHTML = '<p style="font-size:13px;color:var(--ink-faint);">Live feed unavailable. Check API quota.</p>';
+    return;
+  }
+  let html = '';
+  data.feed.slice(0, 8).forEach(item => {
+    const sentiment = item.overall_sentiment_label || 'Neutral';
+    const sentClass = sentiment.toLowerCase().includes('bull') ? 'sent-bull' :
+                      sentiment.toLowerCase().includes('bear') ? 'sent-bear' : 'sent-neu';
+    const sentLabel = sentiment.includes('Bullish') ? 'Bull' : sentiment.includes('Bearish') ? 'Bear' : 'Neutral';
+    const timeAgo = item.time_published ? item.time_published.slice(0,10) : '';
+    html += `<div class="news-item">
+      <a href="${item.url}" target="_blank" rel="noopener">${item.title}</a>
+      <div class="news-meta">${item.source || ''} · ${timeAgo}<span class="news-sentiment ${sentClass}">${sentLabel}</span></div>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+// ── HOME ARTICLES GRID ─────────────────────────────────
+function renderHomeGrid() {
+  const grid = document.getElementById('home-article-grid');
+  const displayArticles = articles.slice().reverse().slice(0, 6);
+  if (!displayArticles.length) { grid.innerHTML = '<div style="padding:20px;color:var(--ink-faint);font-size:13px;">No articles yet. Use the Publish button to add content.</div>'; return; }
+  grid.innerHTML = displayArticles.map(art => `
+    <div class="article-card">
+      <div class="kicker">${art.kicker || art.section}</div>
+      <div class="headline" onclick="openArticle('${art.id}')">${art.headline}</div>
+      <div class="excerpt">${art.deck || ''}</div>
+      <div class="byline">By ${art.author || 'Staff'} · ${formatShort(art.date)}</div>
+    </div>
+  `).join('');
+}
+
+// ── ARTICLE READER ─────────────────────────────────────
+function openArticle(id) {
+  let art;
+  if (id === 'featured') {
+    const fid = featuredId || (articles.length ? articles[articles.length-1].id : null);
+    art = fid ? articles.find(a => a.id === fid) : null;
+    if (!art) art = {
+      id: 'featured',
+      kicker: document.getElementById('feat-kicker').textContent,
+      headline: document.getElementById('feat-headline').textContent.trim(),
+      deck: document.getElementById('feat-deck').textContent.trim(),
+      body: 'This featured story introduces the central thesis of Rajat Aesthetics: the systematic migration of ultra-high-net-worth capital into large-cap public markets represents one of the most significant structural shifts in global finance over the past decade.\n\nPublish your own articles via the CMS to replace this placeholder.',
+      author: 'Rajat Singh',
+      readtime: '8 min read',
+      date: new Date().toISOString()
+    };
+  } else {
+    art = articles.find(a => a.id === id);
+  }
+  if (!art) return;
+  document.getElementById('reader-kicker').textContent = art.kicker || '';
+  document.getElementById('reader-headline').textContent = art.headline;
+  document.getElementById('reader-deck').textContent = art.deck || '';
+  document.getElementById('reader-byline').innerHTML = `By <strong>${art.author || 'Staff'}</strong> · ${formatShort(art.date)} · ${art.readtime || ''}`;
+  const bodyParts = (art.body || '').split(/\n\n+/);
+  document.getElementById('reader-body').innerHTML = bodyParts.map(p => {
+    if (p.startsWith('### ')) return `<h3>${p.slice(4)}</h3>`;
+    if (p.startsWith('"') && p.endsWith('"')) return `<div class="pull-quote">${p}</div>`;
+    return `<p>${p}</p>`;
+  }).join('');
+  document.getElementById('article-reader').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeReader() {
+  document.getElementById('article-reader').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ── UHNI CHARTS ────────────────────────────────────────
+function initUHNICharts() {
+  const allocData = [
+    { label: 'Large-Cap Equities', pct: 42, color: '#111111' },
+    { label: 'Private Equity', pct: 22, color: '#555555' },
+    { label: 'Real Estate', pct: 16, color: '#888888' },
+    { label: 'Fixed Income', pct: 11, color: '#aaaaaa' },
+    { label: 'Alternatives', pct: 9, color: '#cccccc' }
+  ];
+  const bar = document.getElementById('uhni-alloc-bar');
+  bar.innerHTML = allocData.map(d => `<div class="alloc-seg" style="width:${d.pct}%;background:${d.color};"></div>`).join('');
+  const legend = document.getElementById('uhni-alloc-legend');
+  legend.innerHTML = allocData.map(d => `<div class="alloc-item"><span class="alloc-dot" style="background:${d.color};"></span>${d.label} ${d.pct}%</div>`).join('');
+
+  const donutCtx = document.getElementById('uhni-donut');
+  if (donutCtx && !donutChart) {
+    donutChart = new Chart(donutCtx, {
+      type: 'doughnut',
+      data: {
+        labels: allocData.map(d => d.label),
+        datasets: [{ data: allocData.map(d => d.pct), backgroundColor: allocData.map(d => d.color), borderWidth: 2, borderColor: '#faf9f6' }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.parsed}%` } }
+        },
+        cutout: '65%'
+      }
+    });
+    const dl = document.getElementById('donut-legend');
+    if (dl) dl.innerHTML = allocData.map(d => `<div class="alloc-item"><span class="alloc-dot" style="background:${d.color};"></span><span style="font-size:10px;">${d.pct}%</span></div>`).join('');
+  }
+
+  const barCtx = document.getElementById('uhni-bar-chart');
+  if (barCtx && !barChart) {
+    barChart = new Chart(barCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Large-Cap\nEquities', 'Private\nEquity', 'Real\nEstate', 'Fixed\nIncome', 'Alts'],
+        datasets: [
+          { label: '2022', data: [35, 28, 18, 12, 7], backgroundColor: '#cccccc' },
+          { label: '2024', data: [42, 22, 16, 11, 9], backgroundColor: '#111111' }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { position: 'bottom', labels: { font: { size: 11 }, boxWidth: 12 } } },
+        scales: {
+          x: { grid: { display: false }, ticks: { font: { size: 10 } } },
+          y: { grid: { color: '#f0ede6' }, ticks: { font: { size: 10 }, callback: v => v + '%' } }
+        }
+      }
+    });
+  }
+}
+
+// ── UHNI CASE STUDIES ──────────────────────────────────
+const uhniProfiles = [
+  {
+    name: 'Warren Buffett', title: 'Chairman, Berkshire Hathaway · Net Worth: $130B+',
+    metrics: [
+      { l: 'Primary Strategy', v: 'Value / Quality Compounder' },
+      { l: 'Large-Cap Allocation', v: '~90% of equity portfolio' },
+      { l: 'Flagship Holdings', v: 'AAPL, BAC, AXP, KO, CVX' },
+      { l: 'Avg. Holding Period', v: '10+ years' },
+      { l: 'Portfolio Concentration', v: 'Top 5 = 72% of equity' },
+    ],
+    insight: '"Price is what you pay. Value is what you get." — Buffett's large-cap strategy remains the gold standard for UHNI equity allocation: concentrated, patient, quality-first.'
+  },
+  {
+    name: 'Radhakishan Damani', title: 'Founder, Avenue Supermarts · Net Worth: $27B+',
+    metrics: [
+      { l: 'Primary Strategy', v: 'Retail & Consumer Large-Cap' },
+      { l: 'Flagship Holding', v: 'D-Mart (Avenue Supermarts)' },
+      { l: 'Entry Style', v: 'Long-term conviction buy' },
+      { l: 'Portfolio Philosophy', v: 'Concentrated, undisturbed' },
+      { l: 'Notable Bet', v: 'HDFC Bank (early investor)' },
+    ],
+    insight: 'Damani exemplifies the Indian UHNI playbook: build private, go public, hold. His D-Mart listing in 2017 created one of India's largest large-cap consumer stocks overnight.'
+  },
+  {
+    name: 'Ray Dalio', title: 'Founder, Bridgewater Associates · AUM: $125B+',
+    metrics: [
+      { l: 'Strategy', v: 'All-Weather / Macro' },
+      { l: 'Large-Cap Exposure', v: 'Via diversified baskets' },
+      { l: 'Core Philosophy', v: 'Risk parity across asset classes' },
+      { l: 'Equity Tilt', v: 'Global large-caps, inflation-protected' },
+      { l: 'Key Insight', v: 'Correlation, not alpha, is the risk' },
+    ],
+    insight: 'Dalio\'s All Weather portfolio — a framework now adopted by thousands of family offices globally — places large-cap equities at the core of a diversified UHNI allocation.'
+  },
+  {
+    name: 'Larry Fink', title: 'CEO, BlackRock · AUM Managed: $10T+',
+    metrics: [
+      { l: 'Role', v: 'Largest institutional large-cap buyer' },
+      { l: 'Key Products', v: 'iShares ETFs, Active Large-Cap' },
+      { l: 'UHNI Influence', v: 'Sets benchmark for allocation' },
+      { l: ' 2024 Theme', v: 'Infrastructure + AI large-caps' },
+      { l: 'Capital Stewardship', v: '$10T+ in AUM globally' },
+    ],
+    insight: 'BlackRock\'s scale means Fink\'s allocation decisions are effectively the market. His 2024 pivot toward infrastructure and AI-adjacent large-caps has been followed by UHNI family offices globally.'
+  }
+];
+
+function renderUHNICaseStudies() {
+  const container = document.getElementById('uhni-case-studies');
+  container.innerHTML = uhniProfiles.map(p => `
+    <div class="case-card">
+      <div class="case-card-head">
+        <div class="case-name">${p.name}</div>
+        <div class="case-title">${p.title}</div>
+      </div>
+      <div class="case-body">
+        ${p.metrics.map(m => `<div class="case-metric"><span class="case-metric-label">${m.l}</span><span class="case-metric-value">${m.v}</span></div>`).join('')}
+        <div class="case-insight">${p.insight}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── IPO PIPELINE ───────────────────────────────────────
+const ipoData = [
+  { company: 'Stripe', sector: 'Fintech', val: '$65B', stage: 'pre', backers: 'Sequoia, Andreessen', signal: 'Confidential S-1 filed' },
+  { company: 'Databricks', sector: 'AI / Data', val: '$43B', stage: 'pre', backers: 'Andreessen, Tiger', signal: 'IPO in 2025 roadmap' },
+  { company: 'Klarna', sector: 'BNPL / Fintech', val: '$15B', stage: 'ipo', backers: 'Sequoia, SoftBank', signal: 'NYSE listing confirmed' },
+  { company: 'Zepto', sector: 'Q-Commerce (India)', val: '$5B', stage: 'pre', backers: 'Nexus, StepStone', signal: 'Pre-IPO round closed' },
+  { company: 'Anthropic', sector: 'AI / LLMs', val: '$61B', stage: 'pre', backers: 'Google, Amazon, Spark', signal: 'No IPO timeline yet' },
+  { company: 'ServiceTitan', sector: 'SaaS / SMB', val: '$9.5B', stage: 'public', backers: 'ICONIQ, Battery', signal: 'NASDAQ: TTAN listed' },
+  { company: 'Reddit', sector: 'Social Media', val: '$9.8B', stage: 'public', backers: 'Advance, Fidelity', signal: 'NYSE: RDDT listed 2024' },
+  { company: 'PhysicsWallah', sector: 'EdTech (India)', val: '$2.8B', stage: 'pre', backers: 'WestBridge, GSV', signal: 'IPO expected 2025-26' },
+];
+
+function renderIPOTable() {
+  const tbody = document.getElementById('ipo-table-body');
+  if (!tbody) return;
+  const stageMap = { public: ['stage-public', 'Listed'], ipo: ['stage-ipo', 'Filing/IPO'], pre: ['stage-pre', 'Pre-IPO'] };
+  tbody.innerHTML = ipoData.map(row => {
+    const [cls, label] = stageMap[row.stage] || ['stage-pre', row.stage];
+    return `<tr>
+      <td><strong>${row.company}</strong></td>
+      <td>${row.sector}</td>
+      <td>${row.val}</td>
+      <td><span class="stage-pill ${cls}">${label}</span></td>
+      <td style="color:var(--ink-muted);">${row.backers}</td>
+      <td style="font-size:12px;color:var(--ink-faint);">${row.signal}</td>
+    </tr>`;
+  }).join('');
+}
+
+const transitionStories = [
+  {
+    kicker: 'Strategy',
+    headline: 'Why KKR Now Builds for Permanence, Not Exit',
+    body: 'KKR\'s portfolio companies now receive a "public company readiness" playbook from day one. Board composition, IR infrastructure, and ESG reporting are non-negotiable — regardless of exit timeline.'
+  },
+  {
+    kicker: 'India Focus',
+    headline: 'SEBI\'s SME IPO Reforms: The Funnel to Large-Cap',
+    body: 'India\'s regulator has streamlined the pathway from SME Exchange to mainboard listing. 47 companies made the transition in 2024, with three already in large-cap index territory within 18 months.'
+  },
+  {
+    kicker: 'Capital Markets',
+    headline: 'Direct Listings Are Reshaping the PE Exit Playbook',
+    body: 'Direct listings bypass the traditional IPO discount, allowing PE sponsors to monetize at market price from day one. Coinbase, Palantir, and Spotify\'s exits have validated this model for large-scale PE exits.'
+  }
+];
+
+function renderTransitionStories() {
+  const grid = document.getElementById('transition-stories-grid');
+  if (!grid) return;
+  grid.innerHTML = transitionStories.map(s => `
+    <div class="article-card" style="border-right:1px solid var(--rule);border-bottom:none;">
+      <div class="kicker">${s.kicker}</div>
+      <div class="headline" style="font-size:16px;">${s.headline}</div>
+      <div class="excerpt" style="-webkit-line-clamp:5;">${s.body}</div>
+    </div>
+  `).join('');
+}
+
+// ── CASE STUDIES SECTION ───────────────────────────────
+function renderCaseStudiesSection() {
+  const container = document.getElementById('case-studies-container');
+  const caseArticles = articles.filter(a => a.section === 'cases').reverse();
+  const allCases = [...caseArticles];
+  if (!allCases.length) {
+    container.innerHTML = `<div style="padding:32px;text-align:center;color:var(--ink-faint);border:1px dashed var(--rule);border-radius:3px;">
+      <div style="font-size:18px;margin-bottom:8px;">No case studies published yet</div>
+      <div style="font-size:13px;">Use the <strong>Publish</strong> button to add a case study. Select "Case Studies" as the section.</div>
+    </div>`;
+    return;
+  }
+  container.innerHTML = allCases.map(art => `
+    <div class="case-full">
+      <div class="case-full-kicker">${art.kicker || 'Case Study'}</div>
+      <h2 class="case-full-headline">${art.headline}</h2>
+      <div style="font-size:13px;color:var(--ink-faint);margin-bottom:16px;">By ${art.author || 'Staff'} · ${formatShort(art.date)} · ${art.readtime || ''}</div>
+      <div class="case-full-body">${(art.body||'').split(/\n\n+/).slice(0,3).map(p => `<p>${p.startsWith('###')?'<strong>'+p.slice(4)+'</strong>':p}</p>`).join('')}</div>
+      <button style="margin-top:12px;background:none;border:none;font-size:13px;font-weight:600;color:var(--accent);cursor:pointer;padding:0;" onclick="openArticle('${art.id}')">Read full case study →</button>
+    </div>
+  `).join('');
+}
+
+// ── ANALYSIS SECTION ───────────────────────────────────
+function initAnalysisSection() {
+  const main = document.getElementById('analysis-main');
+  const analysisArticles = articles.filter(a => a.section === 'analysis').reverse();
+  if (!analysisArticles.length) {
+    main.innerHTML = `<div style="padding:32px;text-align:center;color:var(--ink-faint);border:1px dashed var(--rule);border-radius:3px;">No analysis pieces published yet. Use the Publish button above.</div>`;
+  } else {
+    main.innerHTML = analysisArticles.map(art => `
+      <div class="opinion-card">
+        <div class="opinion-label">Analysis · ${art.kicker || ''}</div>
+        <div class="opinion-headline">${art.headline}</div>
+        <div class="opinion-body">${(art.deck || art.body || '').slice(0,280)}…</div>
+        <div style="margin-top:10px;font-size:12px;color:var(--ink-faint);">By ${art.author||'Staff'} · ${formatShort(art.date)}</div>
+        <button style="margin-top:8px;background:none;border:none;font-size:13px;font-weight:600;color:var(--accent);cursor:pointer;padding:0;" onclick="openArticle('${art.id}')">Read full piece →</button>
+      </div>
+    `).join('');
+  }
+  loadNewsFeed('analysis-news-feed');
+}
+
+// ── API STATUS ─────────────────────────────────────────
+async function checkAPIStatus() {
+  const el = document.getElementById('api-status');
+  if (!el) return;
+  const data = await avFetch({ function: 'GLOBAL_QUOTE', symbol: 'SPY' });
+  if (data && data['Global Quote'] && data['Global Quote']['05. price']) {
+    el.innerHTML = `<span style="color:var(--success);font-weight:600;">✓ Alpha Vantage Connected</span><span style="color:var(--ink-faint);font-size:12px;margin-left:12px;">Last quote: SPY $${parseFloat(data['Global Quote']['05. price']).toFixed(2)}</span>`;
+  } else if (data && data.Note) {
+    el.innerHTML = `<span style="color:#8b6914;font-weight:600;">⚠ API Rate Limited</span><span style="color:var(--ink-faint);font-size:12px;margin-left:12px;">Free tier: 25 req/day, 5 req/min</span>`;
+  } else {
+    el.innerHTML = `<span style="color:var(--danger);font-weight:600;">✗ Connection Issue</span><span style="color:var(--ink-faint);font-size:12px;margin-left:12px;">Check network or API key</span>`;
+  }
+}
+
+// ── CMS ────────────────────────────────────────────────
+function openCMS() {
+  document.getElementById('cms-overlay').classList.add('open');
+  renderCMSList();
+  renderFeaturedPicker();
+}
+function closeCMS() {
+  document.getElementById('cms-overlay').classList.remove('open');
+  renderHomeGrid();
+  renderCaseStudiesSection();
+}
+function switchCMSTab(tab, el) {
+  document.querySelectorAll('.cms-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.cms-panel').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('cms-panel-' + tab).classList.add('active');
+  if (tab === 'manage') renderCMSList();
+  if (tab === 'featured') renderFeaturedPicker();
+}
+function saveArticle() {
+  const editId = document.getElementById('art-edit-id').value;
+  const art = {
+    id: editId || 'art_' + Date.now(),
+    section: document.getElementById('art-section').value,
+    kicker: document.getElementById('art-kicker').value || document.getElementById('art-section').options[document.getElementById('art-section').selectedIndex].text,
+    headline: document.getElementById('art-headline').value.trim(),
+    deck: document.getElementById('art-deck').value.trim(),
+    body: document.getElementById('art-body').value.trim(),
+    author: document.getElementById('art-author').value.trim() || 'Rajat Singh',
+    readtime: document.getElementById('art-readtime').value.trim() || '5 min read',
+    date: editId ? (articles.find(a=>a.id===editId)||{}).date || new Date().toISOString() : new Date().toISOString()
+  };
+  if (!art.headline) { alert('Please enter a headline.'); return; }
+  if (editId) {
+    const idx = articles.findIndex(a => a.id === editId);
+    if (idx >= 0) articles[idx] = art;
+  } else {
+    articles.push(art);
+  }
+  saveArticles();
+  ['art-headline','art-deck','art-body','art-kicker','art-readtime'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('art-edit-id').value = '';
+  document.getElementById('art-author').value = 'Rajat Singh';
+  document.getElementById('art-section').value = 'home';
+  alert('Article published successfully!');
+  renderCMSList();
+}
+function renderCMSList() {
+  const container = document.getElementById('cms-articles-list');
+  if (!articles.length) { container.innerHTML = '<p style="font-size:13px;color:var(--ink-faint);padding:16px 0;">No articles yet.</p>'; return; }
+  container.innerHTML = articles.slice().reverse().map(art => `
+    <div class="cms-article-item">
+      <div class="cms-art-info">
+        <div class="cms-art-title">${art.headline}</div>
+        <div class="cms-art-meta">${art.section} · ${formatShort(art.date)} · ${art.author}</div>
+      </div>
+      <div class="cms-art-actions">
+        <button class="btn-sm" onclick="editArticle('${art.id}')">Edit</button>
+        <button class="btn-sm del" onclick="deleteArticle('${art.id}')">Delete</button>
+      </div>
+    </div>
+  `).join('');
+}
+function editArticle(id) {
+  const art = articles.find(a => a.id === id);
+  if (!art) return;
+  document.getElementById('art-section').value = art.section;
+  document.getElementById('art-kicker').value = art.kicker;
+  document.getElementById('art-headline').value = art.headline;
+  document.getElementById('art-deck').value = art.deck;
+  document.getElementById('art-body').value = art.body;
+  document.getElementById('art-author').value = art.author;
+  document.getElementById('art-readtime').value = art.readtime;
+  document.getElementById('art-edit-id').value = art.id;
+  switchCMSTab('write', document.querySelectorAll('.cms-tab')[0]);
+}
+function deleteArticle(id) {
+  if (!confirm('Delete this article?')) return;
+  articles = articles.filter(a => a.id !== id);
+  saveArticles();
+  renderCMSList();
+  renderFeaturedPicker();
+}
+function renderFeaturedPicker() {
+  const container = document.getElementById('featured-picker');
+  if (!articles.length) { container.innerHTML = '<p style="font-size:13px;color:var(--ink-faint);">No articles to feature.</p>'; return; }
+  container.innerHTML = articles.slice().reverse().map(art => `
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--rule-light);">
+      <input type="radio" name="featured-pick" value="${art.id}" ${featuredId===art.id?'checked':''} onchange="setFeatured('${art.id}')">
+      <div>
+        <div style="font-size:14px;font-weight:500;">${art.headline}</div>
+        <div style="font-size:12px;color:var(--ink-faint);">${art.section} · ${formatShort(art.date)}</div>
+      </div>
+    </div>
+  `).join('');
+}
+function setFeatured(id) {
+  featuredId = id;
+  localStorage.setItem('ra_featured', id);
+  const art = articles.find(a => a.id === id);
+  if (art) {
+    document.getElementById('feat-kicker').textContent = art.kicker || art.section;
+    document.getElementById('feat-headline').textContent = art.headline;
+    document.getElementById('feat-deck').textContent = art.deck || '';
+  }
+}
+
+// ── INIT ───────────────────────────────────────────────
+async function init() {
+  initSeedArticles();
+  renderHomeGrid();
+  renderUHNICaseStudies();
+  renderIPOTable();
+  renderTransitionStories();
+  initUHNICharts();
+  if (featuredId) {
+    const art = articles.find(a => a.id === featuredId);
+    if (art) {
+      document.getElementById('feat-kicker').textContent = art.kicker || art.section;
+      document.getElementById('feat-headline').textContent = art.headline;
+      document.getElementById('feat-deck').textContent = art.deck || '';
+    }
+  }
+  await loadTicker();
+  await loadNewsFeed('sidebar-news');
+}
+
+init();
+</script>
+</body>
+</html>
