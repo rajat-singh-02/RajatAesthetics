@@ -657,6 +657,14 @@ footer .footer-name { font-family: 'Playfair Display', serif; font-size: 20px; c
 
       <div class="sidebar-block">
         <hr class="sidebar-rule">
+        <div class="sidebar-head">Macro Indicators</div>
+        <div id="macro-panel">
+          <div class="market-card"><div><div class="mkt-name skeleton loading-text"></div></div></div>
+        </div>
+      </div>
+
+      <div class="sidebar-block">
+        <hr class="sidebar-rule">
         <div class="sidebar-head">UHNI Signal</div>
         <div style="background:#fff;border:1px solid var(--rule);padding:14px;border-radius:3px;">
           <div style="font-size:11px;color:var(--ink-faint);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.1em;font-weight:600;">Net Allocation Shift (30d)</div>
@@ -687,7 +695,7 @@ footer .footer-name { font-family: 'Playfair Display', serif; font-size: 20px; c
         <button class="sym-btn" data-sym="DIA" onclick="loadChart('DIA',this)">Dow Jones</button>
         <button class="sym-btn" data-sym="AAPL" onclick="loadChart('AAPL',this)">Apple</button>
         <button class="sym-btn" data-sym="MSFT" onclick="loadChart('MSFT',this)">Microsoft</button>
-        <button class="sym-btn" data-sym="BRK-B" onclick="loadChart('BRK-B',this)">Berkshire</button>
+        <button class="sym-btn" data-sym="BRK.B" onclick="loadChart('BRK.B',this)">Berkshire</button>
       </div>
       <div style="position:relative;height:300px;">
         <canvas id="price-chart"></canvas>
@@ -860,24 +868,25 @@ footer .footer-name { font-family: 'Playfair Display', serif; font-size: 20px; c
     </p>
     <div class="source-grid">
       <div class="source-card">
-        <div class="source-type">Live Market Data</div>
-        <div class="source-name">Alpha Vantage</div>
-        <div class="source-desc">Real-time and historical equity prices, fundamentals, earnings, technical indicators, and news sentiment across global markets.</div>
+        <div class="source-type">Live Market Data — Primary</div>
+        <div class="source-name">Finnhub</div>
+        <div class="source-desc">Real-time equity quotes, 30-day price candles, market news, and earnings data. 60 req/min on free tier with WebSocket support for Phase 2.</div>
         <div class="source-endpoints">
-          <span class="endpoint-pill">GLOBAL_QUOTE</span>
-          <span class="endpoint-pill">TIME_SERIES_DAILY</span>
-          <span class="endpoint-pill">NEWS_SENTIMENT</span>
-          <span class="endpoint-pill">OVERVIEW</span>
+          <span class="endpoint-pill">/quote</span>
+          <span class="endpoint-pill">/stock/candle</span>
+          <span class="endpoint-pill">/news</span>
+          <span class="endpoint-pill">/stock/metric</span>
         </div>
       </div>
       <div class="source-card">
-        <div class="source-type">News & Filings</div>
-        <div class="source-name">Yahoo Finance</div>
-        <div class="source-desc">Market news aggregation, earnings calendar, analyst ratings, SEC filings, and global equity research coverage.</div>
+        <div class="source-type">Macro & Policy — Live</div>
+        <div class="source-name">Federal Reserve (FRED)</div>
+        <div class="source-desc">Federal Funds Rate, CPI, unemployment, 10-year Treasury yield, and 800,000+ macro series. No rate limit.</div>
         <div class="source-endpoints">
-          <span class="endpoint-pill">Market News</span>
-          <span class="endpoint-pill">Analyst Ratings</span>
-          <span class="endpoint-pill">Earnings Data</span>
+          <span class="endpoint-pill">FEDFUNDS</span>
+          <span class="endpoint-pill">CPIAUCSL</span>
+          <span class="endpoint-pill">UNRATE</span>
+          <span class="endpoint-pill">DGS10</span>
         </div>
       </div>
       <div class="source-card">
@@ -1020,15 +1029,17 @@ footer .footer-name { font-family: 'Playfair Display', serif; font-size: 20px; c
 <footer>
   <div class="footer-name">Rajat Aesthetics</div>
   <div>Global Financial Tribune · Markets · Wealth · Intelligence</div>
-  <div style="margin-top:6px;">Data sourced from Alpha Vantage, Yahoo Finance, and public market disclosures. Not financial advice.</div>
+  <div style="margin-top:6px;">Data sourced from Finnhub, FRED (St. Louis Fed), and public market disclosures. Not financial advice.</div>
 </footer>
 
 <!-- ═══════════════════════════════════════════════════ -->
 <!-- JAVASCRIPT                                           -->
 <!-- ═══════════════════════════════════════════════════ -->
 <script>
-const AV_KEY = 'Y2WV71F0AOB498M6';
-const AV_BASE = 'https://www.alphavantage.co/query';
+const FH_KEY  = 'd8el3dpr01qth3ci05rgd8el3dpr01qth3ci05s0';
+const FH_BASE  = 'https://finnhub.io/api/v1';
+const FRED_KEY = '0a741af2ee9c54a2f4562c9a0d6206a2';
+const FRED_BASE = 'https://api.stlouisfed.org/fred';
 
 // ── STATE ──────────────────────────────────────────────
 let articles = JSON.parse(localStorage.getItem('ra_articles') || '[]');
@@ -1131,35 +1142,48 @@ function setMarketStatus() {
 }
 setMarketStatus();
 
-// ── ALPHA VANTAGE FETCH ────────────────────────────────
-const avCache = {};
-async function avFetch(params) {
-  const key = JSON.stringify(params);
-  if (avCache[key]) return avCache[key];
-  const url = AV_BASE + '?' + new URLSearchParams({ ...params, apikey: AV_KEY }).toString();
+// ── FINNHUB FETCH ──────────────────────────────────────
+const fhCache = {};
+async function fhFetch(endpoint, params = {}) {
+  const cacheKey = endpoint + JSON.stringify(params);
+  if (fhCache[cacheKey]) return fhCache[cacheKey];
+  const url = FH_BASE + endpoint + '?' + new URLSearchParams({ ...params, token: FH_KEY });
   try {
     const res = await fetch(url);
     const data = await res.json();
-    avCache[key] = data;
+    fhCache[cacheKey] = data;
     return data;
-  } catch(e) {
-    return null;
-  }
+  } catch(e) { return null; }
+}
+
+// ── FRED FETCH ─────────────────────────────────────────
+const fredCache = {};
+async function fredFetch(seriesId, limit = 1) {
+  if (fredCache[seriesId]) return fredCache[seriesId];
+  const url = FRED_BASE + '/series/observations?' + new URLSearchParams({
+    series_id: seriesId, api_key: FRED_KEY, file_type: 'json',
+    limit, sort_order: 'desc'
+  });
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+    fredCache[seriesId] = data;
+    return data;
+  } catch(e) { return null; }
 }
 
 // ── TICKER ─────────────────────────────────────────────
-const TICKER_SYMBOLS = ['SPY','QQQ','AAPL','MSFT','GOOGL','AMZN','BRK-B','NVDA','META','TSLA'];
+const TICKER_SYMBOLS = ['SPY','QQQ','AAPL','MSFT','GOOGL','AMZN','BRK.B','NVDA','META','TSLA'];
 async function loadTicker() {
   const results = [];
-  for (let sym of TICKER_SYMBOLS.slice(0, 5)) {
-    const data = await avFetch({ function: 'GLOBAL_QUOTE', symbol: sym });
-    if (data && data['Global Quote'] && data['Global Quote']['05. price']) {
-      const q = data['Global Quote'];
-      const price = parseFloat(q['05. price']).toFixed(2);
-      const chg = parseFloat(q['09. change']).toFixed(2);
-      const chgPct = parseFloat(q['10. change percent']).toFixed(2);
-      const cls = chg >= 0 ? 'tick-up' : 'tick-dn';
-      const sign = chg >= 0 ? '+' : '';
+  for (let sym of TICKER_SYMBOLS) {
+    const data = await fhFetch('/quote', { symbol: sym });
+    if (data && data.c && data.c > 0) {
+      const price = data.c.toFixed(2);
+      const chg   = (data.d  || 0).toFixed(2);
+      const chgPct = (data.dp || 0).toFixed(2);
+      const cls  = (data.d || 0) >= 0 ? 'tick-up' : 'tick-dn';
+      const sign = (data.d || 0) >= 0 ? '+' : '';
       results.push(`<span class="tick-item">${sym} <strong>$${price}</strong> <span class="${cls}">${sign}${chg} (${sign}${chgPct}%)</span></span>`);
       marketData[sym] = { price, chg, chgPct };
     }
@@ -1174,11 +1198,11 @@ async function loadTicker() {
 
 // ── SIDEBAR MARKETS ────────────────────────────────────
 const INDEX_MAP = [
-  { sym: 'SPY', name: 'S&P 500', sub: 'SPDR ETF' },
-  { sym: 'QQQ', name: 'Nasdaq 100', sub: 'Invesco ETF' },
-  { sym: 'DIA', name: 'Dow Jones', sub: 'SPDR ETF' },
-  { sym: 'AAPL', name: 'Apple', sub: 'NASDAQ: AAPL' },
-  { sym: 'MSFT', name: 'Microsoft', sub: 'NASDAQ: MSFT' },
+  { sym: 'SPY',   name: 'S&P 500',    sub: 'SPDR ETF' },
+  { sym: 'QQQ',   name: 'Nasdaq 100', sub: 'Invesco ETF' },
+  { sym: 'DIA',   name: 'Dow Jones',  sub: 'SPDR ETF' },
+  { sym: 'AAPL',  name: 'Apple',      sub: 'NASDAQ: AAPL' },
+  { sym: 'MSFT',  name: 'Microsoft',  sub: 'NASDAQ: MSFT' },
 ];
 async function populateSidebarMarkets() {
   const container = document.getElementById('sidebar-markets');
@@ -1186,19 +1210,14 @@ async function populateSidebarMarkets() {
   for (let idx of INDEX_MAP) {
     let d = marketData[idx.sym];
     if (!d) {
-      const raw = await avFetch({ function: 'GLOBAL_QUOTE', symbol: idx.sym });
-      if (raw && raw['Global Quote'] && raw['Global Quote']['05. price']) {
-        const q = raw['Global Quote'];
-        d = {
-          price: parseFloat(q['05. price']).toFixed(2),
-          chg: parseFloat(q['09. change']).toFixed(2),
-          chgPct: parseFloat(q['10. change percent']).toFixed(2)
-        };
+      const raw = await fhFetch('/quote', { symbol: idx.sym });
+      if (raw && raw.c && raw.c > 0) {
+        d = { price: raw.c.toFixed(2), chg: (raw.d||0).toFixed(2), chgPct: (raw.dp||0).toFixed(2) };
         marketData[idx.sym] = d;
       }
     }
     if (d) {
-      const cls = parseFloat(d.chg) >= 0 ? 'up' : 'dn';
+      const cls  = parseFloat(d.chg) >= 0 ? 'up' : 'dn';
       const sign = parseFloat(d.chg) >= 0 ? '+' : '';
       html += `<div class="market-card">
         <div><div class="mkt-name">${idx.name}</div><div class="mkt-sub">${idx.sub}</div></div>
@@ -1216,11 +1235,18 @@ async function populateMarketsIndexGrid() {
   let html = '';
   for (let idx of INDEX_MAP) {
     let d = marketData[idx.sym];
+    if (!d) {
+      const raw = await fhFetch('/quote', { symbol: idx.sym });
+      if (raw && raw.c && raw.c > 0) {
+        d = { price: raw.c.toFixed(2), chg: (raw.d||0).toFixed(2), chgPct: (raw.dp||0).toFixed(2) };
+        marketData[idx.sym] = d;
+      }
+    }
     if (!d) continue;
-    const isUp = parseFloat(d.chg) >= 0;
-    const cls = isUp ? 'up-card' : 'dn-card';
+    const isUp   = parseFloat(d.chg) >= 0;
+    const cls    = isUp ? 'up-card' : 'dn-card';
     const chgCls = isUp ? 'up' : 'dn';
-    const sign = isUp ? '+' : '';
+    const sign   = isUp ? '+' : '';
     html += `<div class="idx-card ${cls}">
       <div class="idx-name">${idx.name}</div>
       <div class="idx-value">$${d.price}</div>
@@ -1234,29 +1260,24 @@ async function populateMarketsIndexGrid() {
 async function loadChart(sym, btn) {
   document.querySelectorAll('.sym-btn').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
-  const data = await avFetch({ function: 'TIME_SERIES_DAILY', symbol: sym, outputsize: 'compact' });
-  if (!data || !data['Time Series (Daily)']) return;
-  const ts = data['Time Series (Daily)'];
-  const dates = Object.keys(ts).slice(0, 30).reverse();
-  const closes = dates.map(d => parseFloat(ts[d]['4. close']));
-  const isUp = closes[closes.length - 1] >= closes[0];
-  const color = isUp ? '#1a6b3a' : '#b5271d';
+  const to   = Math.floor(Date.now() / 1000);
+  const from = to - 30 * 24 * 60 * 60;
+  const data = await fhFetch('/stock/candle', { symbol: sym, resolution: 'D', from, to });
+  if (!data || data.s === 'no_data' || !data.c || !data.c.length) return;
+  const dates  = data.t.map(ts => { const d = new Date(ts * 1000); return (d.getMonth()+1) + '/' + d.getDate(); });
+  const closes = data.c;
+  const isUp   = closes[closes.length - 1] >= closes[0];
+  const color  = isUp ? '#1a6b3a' : '#b5271d';
   const ctx = document.getElementById('price-chart');
   if (priceChart) priceChart.destroy();
   priceChart = new Chart(ctx, {
     type: 'line',
     data: {
-      labels: dates.map(d => d.slice(5)),
+      labels: dates,
       datasets: [{
-        label: sym,
-        data: closes,
-        borderColor: color,
-        backgroundColor: color + '18',
-        borderWidth: 2,
-        pointRadius: 0,
-        pointHoverRadius: 4,
-        fill: true,
-        tension: 0.2
+        label: sym, data: closes,
+        borderColor: color, backgroundColor: color + '18',
+        borderWidth: 2, pointRadius: 0, pointHoverRadius: 4, fill: true, tension: 0.2
       }]
     },
     options: {
@@ -1271,28 +1292,26 @@ async function loadChart(sym, btn) {
 }
 
 // ── MOVERS ─────────────────────────────────────────────
-const MOVER_SYMS = ['AAPL','MSFT','GOOGL','NVDA','META','AMZN','TSLA','BRK-B','JPM','V'];
+const MOVER_SYMS = ['AAPL','MSFT','GOOGL','NVDA','META','AMZN','TSLA','BRK.B','JPM','V'];
 async function loadMovers() {
   const results = [];
-  for (let sym of MOVER_SYMS.slice(0, 8)) {
+  for (let sym of MOVER_SYMS) {
     let d = marketData[sym];
     if (!d) {
-      const raw = await avFetch({ function: 'GLOBAL_QUOTE', symbol: sym });
-      if (raw && raw['Global Quote'] && raw['Global Quote']['05. price']) {
-        const q = raw['Global Quote'];
-        d = { price: parseFloat(q['05. price']).toFixed(2), chg: parseFloat(q['09. change']).toFixed(2), chgPct: parseFloat(q['10. change percent']).toFixed(2) };
+      const raw = await fhFetch('/quote', { symbol: sym });
+      if (raw && raw.c && raw.c > 0) {
+        d = { price: raw.c.toFixed(2), chg: (raw.d||0).toFixed(2), chgPct: (raw.dp||0).toFixed(2) };
         marketData[sym] = d;
       }
     }
     if (d) results.push({ sym, ...d });
   }
-  const sorted = results.sort((a,b) => parseFloat(b.chgPct) - parseFloat(a.chgPct));
+  const sorted  = results.sort((a,b) => parseFloat(b.chgPct) - parseFloat(a.chgPct));
   const gainers = sorted.filter(r => parseFloat(r.chg) >= 0).slice(0,5);
-  const losers = sorted.filter(r => parseFloat(r.chg) < 0).slice(0,5);
+  const losers  = sorted.filter(r => parseFloat(r.chg) < 0).slice(0,5);
   function buildRows(arr) {
     return arr.map(r => `<tr>
-      <td><strong>${r.sym}</strong></td>
-      <td>$${r.price}</td>
+      <td><strong>${r.sym}</strong></td><td>$${r.price}</td>
       <td><span class="badge ${parseFloat(r.chg)>=0?'badge-up':'badge-dn'}">${parseFloat(r.chg)>=0?'+':''}${r.chgPct}%</span></td>
     </tr>`).join('');
   }
@@ -1312,24 +1331,48 @@ function initMarketsSection() {
 async function loadNewsFeed(containerId) {
   const container = document.getElementById(containerId);
   if (!container) return;
-  const data = await avFetch({ function: 'NEWS_SENTIMENT', limit: 10, sort: 'LATEST' });
-  if (!data || !data.feed || !data.feed.length) {
-    container.innerHTML = '<p style="font-size:13px;color:var(--ink-faint);">Live feed unavailable. Check API quota.</p>';
+  const data = await fhFetch('/news', { category: 'general' });
+  if (!data || !Array.isArray(data) || !data.length) {
+    container.innerHTML = '<p style="font-size:13px;color:var(--ink-faint);">Live feed unavailable.</p>';
     return;
   }
   let html = '';
-  data.feed.slice(0, 8).forEach(item => {
-    const sentiment = item.overall_sentiment_label || 'Neutral';
-    const sentClass = sentiment.toLowerCase().includes('bull') ? 'sent-bull' :
-                      sentiment.toLowerCase().includes('bear') ? 'sent-bear' : 'sent-neu';
-    const sentLabel = sentiment.includes('Bullish') ? 'Bull' : sentiment.includes('Bearish') ? 'Bear' : 'Neutral';
-    const timeAgo = item.time_published ? item.time_published.slice(0,10) : '';
+  data.slice(0, 8).forEach(item => {
+    const date = item.datetime
+      ? new Date(item.datetime * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+      : '';
     html += `<div class="news-item">
-      <a href="${item.url}" target="_blank" rel="noopener">${item.title}</a>
-      <div class="news-meta">${item.source || ''} · ${timeAgo}<span class="news-sentiment ${sentClass}">${sentLabel}</span></div>
+      <a href="${item.url}" target="_blank" rel="noopener">${item.headline}</a>
+      <div class="news-meta">${item.source || ''} · ${date}</div>
     </div>`;
   });
   container.innerHTML = html;
+}
+
+// ── MACRO PANEL (FRED) ─────────────────────────────────
+async function loadMacroPanel() {
+  const container = document.getElementById('macro-panel');
+  if (!container) return;
+  const series = [
+    { id: 'FEDFUNDS', label: 'Fed Funds Rate', suffix: '%' },
+    { id: 'DGS10',    label: '10-Yr Treasury', suffix: '%' },
+    { id: 'CPIAUCSL', label: 'CPI (Level)',     suffix: '' },
+    { id: 'UNRATE',   label: 'Unemployment',    suffix: '%' },
+  ];
+  let html = '';
+  for (let s of series) {
+    const data = await fredFetch(s.id);
+    if (data && data.observations && data.observations.length) {
+      const obs  = data.observations[0];
+      const val  = parseFloat(obs.value).toFixed(2);
+      const date = new Date(obs.date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+      html += `<div class="market-card">
+        <div><div class="mkt-name">${s.label}</div><div class="mkt-sub">${date}</div></div>
+        <div class="mkt-price"><div class="mkt-value">${val}${s.suffix}</div></div>
+      </div>`;
+    }
+  }
+  if (html) container.innerHTML = html;
 }
 
 // ── HOME ARTICLES GRID ─────────────────────────────────
@@ -1613,14 +1656,21 @@ function initAnalysisSection() {
 async function checkAPIStatus() {
   const el = document.getElementById('api-status');
   if (!el) return;
-  const data = await avFetch({ function: 'GLOBAL_QUOTE', symbol: 'SPY' });
-  if (data && data['Global Quote'] && data['Global Quote']['05. price']) {
-    el.innerHTML = `<span style="color:var(--success);font-weight:600;">✓ Alpha Vantage Connected</span><span style="color:var(--ink-faint);font-size:12px;margin-left:12px;">Last quote: SPY $${parseFloat(data['Global Quote']['05. price']).toFixed(2)}</span>`;
-  } else if (data && data.Note) {
-    el.innerHTML = `<span style="color:#8b6914;font-weight:600;">⚠ API Rate Limited</span><span style="color:var(--ink-faint);font-size:12px;margin-left:12px;">Free tier: 25 req/day, 5 req/min</span>`;
+  let html = '';
+  const fhData   = await fhFetch('/quote', { symbol: 'SPY' });
+  const fredData = await fredFetch('FEDFUNDS');
+  if (fhData && fhData.c && fhData.c > 0) {
+    html += `<div style="margin-bottom:6px;"><span style="color:var(--success);font-weight:600;">✓ Finnhub Connected</span><span style="color:var(--ink-faint);font-size:12px;margin-left:12px;">SPY $${fhData.c.toFixed(2)} · 60 req/min</span></div>`;
   } else {
-    el.innerHTML = `<span style="color:var(--danger);font-weight:600;">✗ Connection Issue</span><span style="color:var(--ink-faint);font-size:12px;margin-left:12px;">Check network or API key</span>`;
+    html += `<div style="margin-bottom:6px;"><span style="color:var(--danger);font-weight:600;">✗ Finnhub Issue</span><span style="color:var(--ink-faint);font-size:12px;margin-left:12px;">Check network or API key</span></div>`;
   }
+  if (fredData && fredData.observations && fredData.observations.length) {
+    html += `<div style="margin-bottom:6px;"><span style="color:var(--success);font-weight:600;">✓ FRED Connected</span><span style="color:var(--ink-faint);font-size:12px;margin-left:12px;">Fed Funds: ${fredData.observations[0].value}% · No rate limit</span></div>`;
+  } else {
+    html += `<div style="margin-bottom:6px;"><span style="color:var(--danger);font-weight:600;">✗ FRED Issue</span></div>`;
+  }
+  html += `<div><span style="color:#8b6914;font-weight:600;">◎ NewsAPI</span><span style="color:var(--ink-faint);font-size:12px;margin-left:12px;">Enabled in Phase 2 (requires backend proxy)</span></div>`;
+  el.innerHTML = html;
 }
 
 // ── CMS ────────────────────────────────────────────────
@@ -1748,6 +1798,7 @@ async function init() {
   }
   await loadTicker();
   await loadNewsFeed('sidebar-news');
+  loadMacroPanel();
 }
 
 init();
